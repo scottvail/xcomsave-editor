@@ -1,0 +1,7 @@
+# Text files use Unix (LF) line endings in the repository and when checked
+# out, whatever core.autocrlf is set to.
+* text=auto eol=lf
+
+# The example saves are test fixtures compared byte for byte: store them
+# exactly as they are (their JSON files use LF), never converted.
+example/** -text

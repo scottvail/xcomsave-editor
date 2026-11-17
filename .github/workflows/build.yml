@@ -1,0 +1,48 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact: xcomsave-editor-windows-amd64
+            exe: xcomsave-editor.exe
+            ldflags: -s -w -H=windowsgui
+          - os: ubuntu-latest
+            artifact: xcomsave-editor-linux-amd64
+            exe: xcomsave-editor
+            ldflags: -s -w
+          - os: macos-latest
+            artifact: xcomsave-editor-macos-arm64
+            exe: xcomsave-editor
+            ldflags: -s -w
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y gcc libgl1-mesa-dev xorg-dev
+      - name: Test
+        run: go test ./internal/...
+      - name: Build
+        shell: bash
+        run: |
+          go build -trimpath -ldflags "${{ matrix.ldflags }}" -o dist/${{ matrix.exe }} ./cmd/xcomsave-editor
+          ext=""; [ "$RUNNER_OS" = "Windows" ] && ext=".exe"
+          go build -trimpath -ldflags "-s -w" -o dist/xcom2json$ext github.com/scottvail/go-xcomsave/cmd/xcom2json
+          go build -trimpath -ldflags "-s -w" -o dist/json2xcom$ext github.com/scottvail/go-xcomsave/cmd/json2xcom
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist/

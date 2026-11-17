@@ -1,0 +1,13 @@
+/build/
+/dist/
+/bin/
+*.bak
+*.tmp
+
+# macOS metadata (Finder, and AppleDouble files on non-Mac drives)
+.DS_Store
+._*
+
+# Local multi-module development (see README)
+go.work
+go.work.sum

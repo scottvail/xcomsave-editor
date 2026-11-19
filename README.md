@@ -27,6 +27,39 @@ What it can change:
 
 The Barracks and Storage editors are described in more detail below.
 
+## Download
+
+Get the latest version from the
+[Releases page](https://github.com/scottvail/xcomsave-editor/releases/latest):
+
+| Platform | File | To install |
+|---|---|---|
+| macOS 11+ (Intel and Apple Silicon) | `xcomsave-editor_<version>_macos_universal.dmg` | Open it and drag **XCOM Save Editor** to Applications. |
+| Windows | `xcomsave-editor_<version>_windows_amd64.zip` | Unzip and run `xcomsave-editor.exe`. Windows SmartScreen may warn about an unrecognized app the first time: click **More info**, then **Run anyway**. |
+| Linux (x86-64 or ARM64) | `xcomsave-editor_<version>_linux_{amd64,arm64}.AppImage` | `chmod +x xcomsave-editor_*.AppImage`, then run it. |
+
+`SHA256SUMS.txt` lists each file's checksum. The command-line tools
+`xcom2json` and `json2xcom` are released separately, from
+[go-xcomsave](https://github.com/scottvail/go-xcomsave/releases/latest).
+
+With Go and a C compiler installed (Fyne needs cgo: see
+[Building](#building)), you can also install the editor with:
+
+```sh
+go install github.com/scottvail/xcomsave-editor/cmd/xcomsave-editor@latest
+```
+
+### Releasing
+
+Pushing a `v*` tag (`git tag v1.2.0 && git push origin v1.2.0`) runs
+[.github/workflows/release.yml](.github/workflows/release.yml), which builds the
+packages above and publishes them as a GitHub Release. The macOS app is signed
+and notarized when the repository has these secrets: `MACOS_CERT_P12` (the
+Developer ID Application certificate and key, exported as `.p12` and base64
+encoded), `MACOS_CERT_PASSWORD`, and an App Store Connect API key as
+`NOTARY_KEY_P8`, `NOTARY_KEY_ID` and `NOTARY_ISSUER_ID`. Without them the
+release is still built, unsigned.
+
 Opening a save shows a landing page with the save's details (description,
 date, game version, autosave flag), editable campaign settings (cash,
 difficulty, lowest difficulty, Ironman) and a button for each editor. **Barracks** lists every

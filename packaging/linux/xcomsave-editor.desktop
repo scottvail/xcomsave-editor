@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=XCOM Save Editor
+GenericName=Save Game Editor
+Comment=Edit XCOM: Enemy Unknown / Enemy Within saved games
+Exec=xcomsave-editor %f
+Icon=xcomsave-editor
+Terminal=false
+Categories=Game;Utility;
+Keywords=XCOM;save;savegame;editor;

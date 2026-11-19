@@ -46,10 +46,10 @@ jobs:
             appimage_arch: aarch64
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ env.TAG }}
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - name: Install dependencies
@@ -78,7 +78,7 @@ jobs:
           chmod +x "$tool"
           mkdir -p dist
           "$tool" --no-appstream "$app" "dist/${EDITOR}_${TAG#v}_linux_${{ matrix.arch }}.AppImage"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: editor-linux-${{ matrix.arch }}
           path: dist/*
@@ -89,10 +89,10 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ env.TAG }}
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - name: Embed icon and version info
@@ -113,7 +113,7 @@ jobs:
           mkdir -p "build/$name" dist
           cp "build/$EDITOR.exe" LICENSE README.md "build/$name/"
           (cd build && 7z a -tzip -bso0 "../dist/$name.zip" "$name")
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: editor-windows-amd64
           path: dist/*
@@ -130,10 +130,10 @@ jobs:
       MACOSX_DEPLOYMENT_TARGET: "11.0"
       APP: XCOM Save Editor.app
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ env.TAG }}
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - name: Build universal binary
@@ -189,7 +189,7 @@ jobs:
         run: |
           spctl --assess --type execute --verbose=2 "build/$APP"
           spctl --assess --type open --context context:primary-signature --verbose=2 dist/*.dmg
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: editor-macos-universal
           path: dist/*
@@ -199,7 +199,7 @@ jobs:
     if: startsWith(inputs.tag || github.ref_name, 'v')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true

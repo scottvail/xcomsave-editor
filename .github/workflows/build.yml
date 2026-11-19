@@ -26,8 +26,8 @@ jobs:
             ldflags: -s -w
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
       - name: Install Linux dependencies
@@ -42,7 +42,7 @@ jobs:
           ext=""; [ "$RUNNER_OS" = "Windows" ] && ext=".exe"
           go build -trimpath -ldflags "-s -w" -o dist/xcom2json$ext github.com/scottvail/go-xcomsave/cmd/xcom2json
           go build -trimpath -ldflags "-s -w" -o dist/json2xcom$ext github.com/scottvail/go-xcomsave/cmd/json2xcom
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.artifact }}
           path: dist/
